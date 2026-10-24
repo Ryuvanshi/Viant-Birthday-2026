@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Piece of You 🌷</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --ink: #5a4332;
+    --muted-ink: #806751;
+    --paper: rgba(255, 250, 239, 0.76);
+}
+
+body {
+    min-height: 100vh;
+    padding: 56px 20px 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background:
+        radial-gradient(circle at 18% 12%, rgba(255,255,255,.55), transparent 30%),
+        radial-gradient(circle at 85% 78%, rgba(176,132,91,.18), transparent 35%),
+        linear-gradient(145deg, #f6e6c8, #dfc29b 55%, #d4b28a);
+    color: var(--ink);
+    font-family: 'Quicksand', sans-serif;
+    overflow-x: hidden;
+    position: relative;
+    isolation: isolate;
+}
+
+.dust {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.58);
+    box-shadow: 0 0 8px rgba(255,255,255,.35);
+    pointer-events: none;
+    z-index: -1;
+    animation: float 12s linear infinite;
+}
+
+@keyframes float {
+    from { transform: translateY(110vh); opacity: 0; }
+    20% { opacity: .9; }
+    to { transform: translateY(-10vh); opacity: 0; }
+}
+
+.page {
+    width: min(100%, 920px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: fadeUp 1.4s ease forwards;
+}
+
+.eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    color: var(--muted-ink);
+    margin-bottom: 12px;
+}
+
+h1 {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(42px, 7vw, 64px);
+    line-height: 1;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.subtitle {
+    font-size: clamp(14px, 2.5vw, 17px);
+    line-height: 1.7;
+    opacity: .86;
+    max-width: 560px;
+}
+
+.artwork-frame {
+    /* The frame follows the artwork's natural aspect ratio instead of stretching wide. */
+    display: inline-block;
+    width: fit-content;
+    max-width: min(100%, 760px);
+    padding: 13px;
+    background: linear-gradient(135deg, #fff9ed, #e8d4b4 48%, #fff8e9 72%, #d5b58b);
+    border: 1px solid rgba(112, 79, 52, .34);
+    border-radius: 7px;
+    box-shadow: inset 0 0 0 3px rgba(255,255,255,.65), inset 0 0 0 5px rgba(129,91,53,.12), 0 22px 55px rgba(83, 55, 33, .22), 0 3px 10px rgba(83, 55, 33, .08);
+    opacity: 0;
+    transform: translateY(28px) scale(.985);
+    animation: revealArt 1.5s cubic-bezier(.2,.75,.25,1) .45s forwards;
+    position: relative;
+    line-height: 0;
+}
+
+.artwork-frame::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid rgba(112, 79, 52, .22);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.artwork {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 68vh;
+    object-fit: contain;
+    background: transparent;
+    border: 1px solid rgba(112, 79, 52, .16);
+    border-radius: 1px;
+}
+
+.art-caption {
+    margin-top: 22px;
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: clamp(23px, 4vw, 30px);
+    line-height: 1.35;
+    color: #674b36;
+    opacity: 0;
+    animation: fadeUp 1.3s ease 1.3s forwards;
+}
+
+.bottom {
+    text-align: center;
+    margin-top: 34px;
+    opacity: 0;
+    animation: fadeUp 1.3s ease 1.7s forwards;
+}
+
+.bottom p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--muted-ink);
+    margin-bottom: 20px;
+}
+
+.next-btn {
+    border: 1px solid rgba(112, 79, 52, .38);
+    background: rgba(255, 250, 239, .4);
+    color: var(--ink);
+    padding: 13px 29px;
+    border-radius: 999px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+}
+
+.next-btn:hover {
+    background: rgba(255, 250, 239, .75);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(83, 55, 33, .12);
+}
+
+.next-btn:focus-visible {
+    outline: 3px solid rgba(112, 79, 52, .4);
+    outline-offset: 4px;
+}
+
+#music-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+
+    padding: 11px 18px;
+    border: 1px solid rgba(112, 79, 52, 0.35);
+    border-radius: 6px;
+
+    background: linear-gradient(
+        135deg,
+        rgba(255, 250, 239, 0.96),
+        rgba(232, 212, 180, 0.94)
+    );
+
+    color: var(--ink);
+    font-family: 'Quicksand', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.45),
+        0 4px 14px rgba(83, 55, 33, 0.12);
+
+    cursor: pointer;
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+}
+
+#music-toggle:hover {
+    background: linear-gradient(135deg, #fffaf0, #ead7b8);
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(83, 55, 33, 0.16);
+}
+
+#music-toggle:focus-visible {
+    outline: 2px solid var(--muted-ink);
+    outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+    #music-toggle {
+        bottom: 14px;
+        right: 14px;
+        padding: 10px 14px;
+        font-size: 11px;
+    }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes revealArt {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 600px) {
+    body { padding: 38px 14px 32px; }
+    .title { margin-bottom: 24px; }
+    .artwork-frame { padding: 9px; max-width: 100%; }
+    .artwork-frame::before { inset: 5px; }
+    .artwork { max-height: 58vh; max-width: 100%; }
+    .bottom { margin-top: 27px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-delay: 0ms !important;
+        transition-duration: .01ms !important;
+    }
+    .title, .artwork-frame, .art-caption, .bottom {
+        opacity: 1;
+        transform: none;
+    }
+}
+</style>
+</head>
+
+<body>
+<main class="page">
+    <header class="title">
+        <div class="eyebrow">Made with care ✧</div>
+        <h1>A Little Piece of You</h1>
+        <p class="subtitle">
+            A small portrait for someone who deserves to be seen in all the lovely ways she is.
+        </p>
+    </header>
+
+    <figure class="artwork-frame">
+        <img class="artwork" src="Assets/Image/Commis.jpg" alt="A commissioned portrait of Viant" />
+    </figure>
+
+    <div class="art-caption">
+        “Some flowers are lovely; some make the whole field feel different.”
+    </div>
+
+    <footer class="bottom">
+        <p>I hope this little piece brings you a smile. 🌷</p>
+        <button class="next-btn" onclick="nextPage()">Turn the Page →</button>
+    </footer>
+</main>
+
+<audio id="background-music" autoplay loop preload="auto">
+    <source src="Assets/Audio/Jesu.mp3" type="audio/mpeg">
+</audio>
+
+<button id="music-toggle" type="button">♫ Play music</button>
+
+<script>
+function nextPage() {
+    document.body.style.transition = "opacity .8s ease";
+    document.body.style.opacity = "0";
+
+    setTimeout(() => {
+        window.location.href = "playlist.html";
+    }, 800);
+}
+
+// Gentle floating dust, matching the warm vintage theme.
+for (let i = 0; i < 34; i++) {
+    const dust = document.createElement("div");
+    dust.className = "dust";
+    dust.style.left = Math.random() * 100 + "vw";
+    dust.style.animationDuration = (9 + Math.random() * 11) + "s";
+    dust.style.animationDelay = (Math.random() * 12) + "s";
+    document.body.appendChild(dust);
+}
+
+const music = document.getElementById("background-music");
+const toggle = document.getElementById("music-toggle");
+
+music.volume = 0.18;
+
+async function startMusic() {
+    try {
+        await music.play();
+        toggle.textContent = "♫ Pause music";
+    } catch (error) {
+        console.log("Music autoplay blocked:", error.name);
+        toggle.textContent = "♫ Play music";
+    }
+}
+
+startMusic();
+
+toggle.addEventListener("click", async () => {
+    if (music.paused) {
+        try {
+            await music.play();
+        } catch (error) {
+            console.log("Playback failed:", error);
+        }
+    } else {
+        music.pause();
+    }
+});
+
+music.addEventListener("play", () => {
+    toggle.textContent = "♫ Pause music";
+});
+
+music.addEventListener("pause", () => {
+    toggle.textContent = "♫ Play music";
+});
+
+</script>
+</body>
+</html>

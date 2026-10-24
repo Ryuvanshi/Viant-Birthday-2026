@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Garden in Bloom 🌷</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ink: #51463f;
+            --soft-ink: #7a685a;
+            --paper: rgba(255, 250, 239, 0.76);
+            --blue: #718cae;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 54px 18px 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            isolation: isolate;
+            overflow-x: hidden;
+            color: var(--ink);
+            font-family: 'Quicksand', sans-serif;
+            background:
+                radial-gradient(circle at 15% 12%, rgba(255, 255, 255, 0.62), transparent 29%),
+                radial-gradient(circle at 88% 82%, rgba(143, 163, 191, 0.22), transparent 31%),
+                linear-gradient(145deg, #f6e9d4, #e4d1b5 58%, #d7c1a2);
+        }
+
+        .dust {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.72);
+            box-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            z-index: -1;
+            animation: drift 13s linear infinite;
+        }
+
+        @keyframes drift {
+            from {
+                transform: translateY(110vh) translateX(0);
+                opacity: 0;
+            }
+
+            18% {
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translateY(45vh) translateX(18px);
+            }
+
+            to {
+                transform: translateY(-10vh) translateX(-10px);
+                opacity: 0;
+            }
+        }
+
+        .page {
+            width: min(100%, 760px);
+            margin: auto;
+            text-align: center;
+            opacity: 0;
+            animation: appear 1.5s ease forwards;
+        }
+
+        .kicker {
+            text-transform: uppercase;
+            letter-spacing: 0.24em;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--soft-ink);
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(46px, 8vw, 70px);
+            line-height: 1;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #59483e;
+        }
+
+        .intro {
+            font-size: 14px;
+            color: var(--soft-ink);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .poem-card {
+            position: relative;
+            padding: clamp(25px, 5vw, 46px) clamp(20px, 6vw, 64px);
+            background: var(--paper);
+            border: 1px solid rgba(119, 91, 67, 0.2);
+            border-radius: 5px;
+            box-shadow: 0 20px 50px rgba(87, 63, 43, 0.15);
+            text-align: center;
+        }
+
+        .poem-card::before {
+            content: "";
+            position: absolute;
+            inset: 8px;
+            border: 1px solid rgba(119, 91, 67, 0.12);
+            pointer-events: none;
+        }
+
+        .flower {
+            color: var(--blue);
+            font-size: 25px;
+            margin-bottom: 18px;
+            opacity: 0.9;
+        }
+
+        .poem {
+            position: relative;
+            z-index: 1;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(18px, 3.2vw, 23px);
+            line-height: 1.72;
+            font-weight: 500;
+            color: #594c43;
+        }
+
+        .stanza {
+            margin-bottom: 23px;
+        }
+
+        .stanza:last-child {
+            margin-bottom: 0;
+        }
+
+        .stanza em {
+            color: #627fa2;
+            font-style: italic;
+        }
+
+        .signature {
+            margin-top: 25px;
+            font-family: 'Caveat', cursive;
+            font-size: 27px;
+            color: #7c6755;
+        }
+
+        .footer {
+            margin-top: 28px;
+            opacity: 0;
+            animation: appear 1.2s ease 1s forwards;
+        }
+
+        .footer p {
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--soft-ink);
+            margin-bottom: 17px;
+        }
+
+        .next-btn {
+            border: 1px solid rgba(103, 84, 68, 0.35);
+            background: rgba(255, 250, 239, 0.42);
+            color: #59483e;
+            padding: 13px 28px;
+            border-radius: 999px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition:
+                transform 0.25s ease,
+                background 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 250, 239, 0.78);
+            box-shadow: 0 8px 20px rgba(87, 63, 43, 0.12);
+        }
+
+        .next-btn:focus-visible {
+            outline: 3px solid rgba(98, 127, 162, 0.45);
+            outline-offset: 4px;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 560px) {
+            body {
+                padding: 35px 13px 28px;
+            }
+
+            .intro {
+                margin-bottom: 22px;
+            }
+
+            .poem-card {
+                padding: 27px 20px;
+            }
+
+            .stanza {
+                margin-bottom: 19px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-delay: 0ms !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .page,
+            .footer {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page">
+        <header>
+            <div class="kicker">A little poem, just for you</div>
+            <h1>For the Blue Hydrangea</h1>
+            <p class="intro">Some feelings are easier to leave between the lines.</p>
+        </header>
+
+        <article class="poem-card">
+            <div class="flower" aria-hidden="true">✿</div>
+
+            <div class="poem">
+                <p class="stanza">
+                    If the world were only a garden,<br>
+                    you would not need to be its brightest flower.<br>
+                    You would not need to bloom for anyone,<br>
+                    or prove your worth with every passing hour.
+                </p>
+
+                <p class="stanza">
+                    Even on the days your petals fold,<br>
+                    when the sky forgets its blue,<br>
+                    the garden does not think you lesser<br>
+                    it simply makes a little room for you.
+                </p>
+
+                <p class="stanza">
+                    And somewhere in that quiet field,<br>
+                    beneath the rain and morning dew,<br>
+                    a blue hydrangea keeps its color<br>
+                    not because it must,<br>
+                    but because it is <em>beautifully, wholly you.</em>
+                </p>
+
+                <p class="stanza">
+                    Seasons change. The light moves on.<br>
+                    Some paths may part, some skies turn gray.<br>
+                    Still, I hope life brings you gentle mornings<br>
+                    and gives you reasons to smile along the way.
+                </p>
+
+                <p class="stanza">
+                    So grow at your pace, in your own time;<br>
+                    let no hurried hand decide your spring.<br>
+                    There is no single way for flowers to bloom<br>
+                    may you find the joy that each new season brings.
+                </p>
+            </div>
+
+            <div class="signature">— with warmth, always. Ryu</div>
+        </article>
+
+        <footer class="footer">
+            <p>
+                No need to find a meaning in every line.<br>
+                I just hope a little kindness stays with you.
+            </p>
+
+            <button class="next-btn" onclick="nextPage()">One Last Thing →</button>
+        </footer>
+    </main>
+
+    <script>
+        function nextPage() {
+            document.body.style.transition = "opacity 0.8s ease";
+            document.body.style.opacity = "0";
+
+            setTimeout(() => {
+                window.location.href = "final.html";
+            }, 800);
+        }
+
+        for (let i = 0; i < 35; i++) {
+            const dust = document.createElement("div");
+
+            dust.className = "dust";
+            dust.style.left = Math.random() * 100 + "vw";
+            dust.style.animationDuration = (9 + Math.random() * 12) + "s";
+            dust.style.animationDelay = Math.random() * 12 + "s";
+
+            document.body.appendChild(dust);
+        }
+    </script>
+</body>
+</html>

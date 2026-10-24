@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday ✨</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Quicksand',sans-serif;
+}
+
+body{
+    overflow:hidden;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+
+    background:
+    radial-gradient(circle at top left, #ffb6c1 0%, transparent 35%),
+    radial-gradient(circle at top right, #ffd6e7 0%, transparent 30%),
+    radial-gradient(circle at bottom, #c8a2ff 0%, transparent 40%),
+    linear-gradient(
+        135deg,
+        #ff9eb5,
+        #ffc7d8,
+        #f4d0ff,
+        #d8b4ff
+    );
+
+    transition:5.0s;
+}
+
+/* Floating circles */
+.bokeh{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.18);
+    backdrop-filter:blur(5px);
+    animation:floatUp linear infinite;
+    pointer-events:none;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(120vh);
+        opacity:0;
+    }
+    20%{
+        opacity:1;
+    }
+    to{
+        transform:translateY(-20vh);
+        opacity:0;
+    }
+}
+
+/* Sparkles */
+.sparkle{
+    position:absolute;
+    color:white;
+    opacity:.6;
+    animation:twinkle 3s infinite;
+    pointer-events:none;
+}
+
+@keyframes twinkle{
+    0%,100%{
+        opacity:.2;
+        transform:scale(1);
+    }
+    50%{
+        opacity:1;
+        transform:scale(1.4);
+    }
+}
+
+.container{
+    position:relative;
+    z-index:100;
+    text-align:center;
+    width:90%;
+    max-width:450px;
+    padding:35px;
+
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:30px;
+
+    box-shadow:0 8px 32px rgba(255,255,255,.15);
+}
+
+h1{
+    font-size:2.3rem;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#fff;
+    opacity:.9;
+    margin-bottom:35px;
+    line-height:1.5;
+}
+
+/* Hearts */
+.pin-display{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-bottom:35px;
+}
+
+.heart{
+    font-size:34px;
+    opacity:.25;
+    transition:.3s;
+}
+
+.filled{
+    opacity:1;
+    transform:scale(1.15);
+    text-shadow:
+    0 0 10px #ff7eb3,
+    0 0 20px #ff7eb3,
+    0 0 40px #ff7eb3;
+}
+
+/* Keypad */
+.keypad{
+    display:grid;
+    grid-template-columns:repeat(3,80px);
+    gap:15px;
+    justify-content:center;
+}
+
+.key{
+    width:80px;
+    height:80px;
+    border:none;
+    border-radius:24px;
+    background:rgba(255,255,255,.18);
+    color:white;
+    font-size:24px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.key:hover{
+    transform:translateY(-3px);
+    background:rgba(255,255,255,.28);
+}
+
+.key:active{
+    transform:scale(.95);
+}
+
+.key:focus-visible,
+.popup-button:focus-visible{
+    outline:2px solid white;
+    outline-offset:4px;
+}
+
+.zero{
+    grid-column:2;
+}
+
+.message{
+    height:30px;
+    margin-top:20px;
+    font-weight:600;
+}
+
+.hint{
+    margin-top:15px;
+    font-size:.95rem;
+    opacity:.85;
+}
+
+/* Unlock animation */
+.unlock{
+    animation:unlockAnimation 1.5s forwards;
+}
+
+@keyframes unlockAnimation{
+    0%{
+        opacity:1;
+        transform:scale(1);
+    }
+    100%{
+        opacity:0;
+        transform:scale(1.15);
+    }
+}
+
+/* Wrong PIN popup */
+.popup-overlay{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+
+    background:rgba(55,25,65,0.4);
+    backdrop-filter:blur(8px);
+
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+
+    transition:opacity .3s ease, visibility .3s ease;
+}
+
+.popup-overlay.show{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+}
+
+.popup-card{
+    width:100%;
+    max-width:340px;
+    padding:35px 25px;
+    text-align:center;
+    color:white;
+
+    background:linear-gradient(
+        135deg,
+        rgba(255,174,205,0.97),
+        rgba(190,155,255,0.97)
+    );
+
+    border:1px solid rgba(255,255,255,0.65);
+    border-radius:28px;
+    box-shadow:0 15px 50px rgba(70,30,90,0.3);
+
+    transform:scale(.8) translateY(20px);
+    transition:transform .35s ease;
+}
+
+.popup-overlay.show .popup-card{
+    transform:scale(1) translateY(0);
+}
+
+.popup-icon{
+    font-size:48px;
+    margin-bottom:12px;
+    animation:popupHeart 1.2s ease-in-out infinite;
+}
+
+.popup-card h2{
+    font-size:28px;
+    margin-bottom:12px;
+}
+
+.popup-card p{
+    line-height:1.7;
+    margin-bottom:25px;
+}
+
+.popup-button{
+    padding:13px 25px;
+    border:none;
+    border-radius:18px;
+    background:rgba(255,255,255,0.9);
+    color:#9b5aab;
+    font-family:inherit;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    transition:transform .2s, background .2s;
+}
+
+.popup-button:hover{
+    transform:translateY(-2px);
+    background:white;
+}
+
+.popup-button:active{
+    transform:scale(.96);
+}
+
+@keyframes popupHeart{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.12); }
+}
+
+@media (max-width:380px){
+    .container{
+        padding:28px 18px;
+    }
+
+    .keypad{
+        grid-template-columns:repeat(3,70px);
+        gap:12px;
+    }
+
+    .key{
+        width:70px;
+        height:70px;
+        border-radius:20px;
+    }
+
+    h1{
+        font-size:2rem;
+    }
+}
+
+@media (prefers-reduced-motion:reduce){
+    *, *::before, *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container" id="container">
+    <h1>🎂 Happy Birthday</h1>
+
+    <p class="subtitle">
+        A little birthday surprise made especially for you ✨
+    </p>
+
+    <div class="pin-display">
+        <span class="heart">❤</span>
+        <span class="heart">❤</span>
+        <span class="heart">❤</span>
+        <span class="heart">❤</span>
+    </div>
+
+    <div class="keypad">
+        <button class="key" onclick="press(1)">1</button>
+        <button class="key" onclick="press(2)">2</button>
+        <button class="key" onclick="press(3)">3</button>
+
+        <button class="key" onclick="press(4)">4</button>
+        <button class="key" onclick="press(5)">5</button>
+        <button class="key" onclick="press(6)">6</button>
+
+        <button class="key" onclick="press(7)">7</button>
+        <button class="key" onclick="press(8)">8</button>
+        <button class="key" onclick="press(9)">9</button>
+
+        <button class="key zero" onclick="press(0)">0</button>
+    </div>
+
+    <div class="message" id="message" aria-live="polite"></div>
+
+    <div class="hint">
+        🌸 The key is a day worth celebrating.
+    </div>
+</div>
+
+<!-- Wrong PIN Popup -->
+<div class="popup-overlay" id="wrongPopup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupDescription">
+    <div class="popup-card">
+        <div class="popup-icon">💔</div>
+
+        <h2 id="popupTitle">Oopsie!</h2>
+
+        <p id="popupDescription">
+            Wrong Password.<br>
+            Try your birthdate, birthday girl 🌸
+        </p>
+
+        <button class="popup-button" onclick="closePopup()">
+            Try Again ✨
+        </button>
+    </div>
+</div>
+
+<script>
+const CORRECT_PIN = "3110";
+
+let pin = "";
+let checkingPin = false;
+
+function press(number){
+    if(checkingPin || pin.length >= 4) return;
+
+    pin += number;
+    updateHearts();
+
+    if(pin.length === 4){
+        checkingPin = true;
+
+        setTimeout(()=>{
+            if(pin === CORRECT_PIN){
+                document.getElementById("message").innerHTML =
+                    "✨ Welcome, my favorite person ✨";
+
+                document.getElementById("container")
+                    .classList.add("unlock");
+
+                setTimeout(()=>{
+                    window.location.href = "cake.html";
+                },1500);
+
+            }else{
+                pin = "";
+                updateHearts();
+
+                document.getElementById("wrongPopup")
+                    .classList.add("show");
+            }
+        },300);
+    }
+}
+
+function closePopup(){
+    document.getElementById("wrongPopup")
+        .classList.remove("show");
+
+    document.getElementById("message").innerHTML = "";
+    checkingPin = false;
+}
+
+function updateHearts(){
+    const hearts = document.querySelectorAll(".heart");
+
+    hearts.forEach((heart,index)=>{
+        if(index < pin.length){
+            heart.classList.add("filled");
+        }else{
+            heart.classList.remove("filled");
+        }
+    });
+}
+
+/* Efek Jir */
+for(let i=0;i<30;i++){
+    const bubble = document.createElement("div");
+    bubble.classList.add("bokeh");
+
+    const size = Math.random()*80 + 20;
+    bubble.style.width = size + "px";
+    bubble.style.height = size + "px";
+    bubble.style.left = Math.random()*100 + "vw";
+    bubble.style.animationDuration = (12 + Math.random()*12) + "s";
+    bubble.style.animationDelay = Math.random()*10 + "s";
+
+    document.body.appendChild(bubble);
+}
+
+for(let i=0;i<40;i++){
+    const star = document.createElement("div");
+    star.classList.add("sparkle");
+    star.innerHTML = "✦";
+    star.style.left = Math.random()*100 + "vw";
+    star.style.top = Math.random()*100 + "vh";
+    star.style.fontSize = (10 + Math.random()*15) + "px";
+    star.style.animationDelay = Math.random()*3 + "s";
+
+    document.body.appendChild(star);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071126">
+  <title>For All the Tomorrows Ahead — Viant</title>
+
+  <style>
+    :root {
+      --night: #071126;
+      --blue: #8dbdff;
+      --pale: #e4eeff;
+      --muted: #a9b8d4;
+      --gold: #f5d8a0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      background: var(--night);
+      color: var(--pale);
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .screen {
+      position: relative;
+      width: 100%;
+      height: 100svh;
+      overflow: hidden;
+      background: radial-gradient(
+        ellipse at 50% 100%,
+        #142c54 0%,
+        #0b1936 43%,
+        #050b19 100%
+      );
+    }
+
+    #sky {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .vignette {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 40%,
+        #03071375 100%
+      );
+    }
+
+    .content {
+      position: absolute;
+      z-index: 3;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(680px, calc(100% - 36px));
+      text-align: center;
+      padding: 24px 10px;
+      transition: opacity 0.8s, transform 0.8s;
+    }
+
+    .kicker {
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #91a8d0;
+      margin: 0 0 18px;
+    }
+
+    h1 {
+      font-weight: normal;
+      font-style: italic;
+      font-size: clamp(2.1rem, 6vw, 4.4rem);
+      line-height: 1.1;
+      margin: 0 0 16px;
+      text-shadow: 0 0 35px #8dbdff25;
+    }
+
+    .intro {
+      max-width: 480px;
+      margin: 0 auto;
+      color: #b6c3dc;
+      font-size: clamp(0.98rem, 2.4vw, 1.1rem);
+      line-height: 1.8;
+    }
+
+    .wish {
+      min-height: 62px;
+      margin: 26px auto 0;
+      max-width: 520px;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-style: italic;
+      line-height: 1.7;
+      color: #edf3ff;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 1.25s ease, transform 1.25s ease;
+    }
+
+    .wish.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .counter {
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      color: #7f96bf;
+      margin: 12px 0 22px;
+      min-height: 1em;
+    }
+
+    .btn {
+      border: 1px solid #9bb9ed88;
+      border-radius: 999px;
+      background: #14274b9c;
+      color: #edf4ff;
+      padding: 13px 25px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      box-shadow: 0 0 24px #6699e31a;
+      transition: background 0.25s, border-color 0.25s, transform 0.25s;
+    }
+
+    .btn:hover {
+      background: #233e6b;
+      border-color: #c1d6ff;
+      transform: translateY(-2px);
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 4px;
+    }
+
+    .hint {
+      font-size: 0.72rem;
+      color: #7186ad;
+      margin: 13px 0 0;
+      letter-spacing: 0.06em;
+    }
+
+    .ending {
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -46%);
+    }
+
+    .ending.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%);
+    }
+
+    .main.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -54%);
+    }
+
+    .ending h2 {
+      font-size: clamp(2.1rem, 6vw, 4rem);
+      font-weight: normal;
+      font-style: italic;
+      line-height: 1.15;
+      margin: 0 0 22px;
+      color: #e4eeff;
+    }
+
+    .ending p {
+      color: #b8c6df;
+      line-height: 1.9;
+      font-size: 1rem;
+      margin: 0 auto 12px;
+      max-width: 500px;
+    }
+
+    .ending .birthday {
+      color: #d4e2ff;
+      letter-spacing: 0.04em;
+      margin-top: 24px;
+    }
+
+    .ending .signature {
+      font-size: 0.85rem;
+      color: #849bc4;
+      margin-top: 26px;
+    }
+
+    .ending .btn {
+      margin-top: 25px;
+    }
+
+    .fadeout {
+      animation: fadeout 2.4s ease forwards;
+    }
+
+    @keyframes fadeout {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @media (max-height: 620px) {
+      .content {
+        padding: 10px;
+      }
+
+      .kicker {
+        margin-bottom: 10px;
+      }
+
+      h1 {
+        margin-bottom: 8px;
+      }
+
+      .wish {
+        margin-top: 12px;
+        min-height: 46px;
+      }
+
+      .counter {
+        margin-bottom: 12px;
+      }
+
+      .btn {
+        padding: 10px 21px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen" id="screen">
+    <canvas id="sky" aria-hidden="true"></canvas>
+    <div class="vignette"></div>
+
+    <section class="content main" id="main">
+      <p class="kicker">A little wish for you</p>
+      <h1>For All the Tomorrows Ahead</h1>
+      <p class="intro">
+        Some wishes are too lovely to keep to ourselves.<br>
+        Shall we send a few into the sky?
+      </p>
+      <p class="wish" id="wish" aria-live="polite"></p>
+      <p class="counter" id="counter"></p>
+      <button class="btn" id="wishBtn">Make a wish ✦</button>
+      <p class="hint" id="hint">One little wish at a time</p>
+    </section>
+
+    <section class="content ending" id="ending">
+      <p class="kicker">And so, the night settles</p>
+      <h2>For all the tomorrows ahead.</h2>
+      <p>May life bring you beautiful things,</p>
+      <p>in your own time and in your own way.</p>
+      <p>May tomorrow be a little kinder,</p>
+      <p>and may you always find a reason to smile.</p>
+      <p class="birthday">Happy birthday, Viant. ♡</p>
+      <p class="signature">Made with care, by someone who wishes you well.</p>
+      <button class="btn" id="againBtn">Watch the sky again ↺</button>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const canvas = document.getElementById('sky');
+      const ctx = canvas.getContext('2d');
+
+      let w = 0;
+      let h = 0;
+      let dpr = 1;
+      let stars = [];
+      let petals = [];
+      let rockets = [];
+      let sparks = [];
+      let last = 0;
+      let endingStarted = false;
+      let rafId = 0;
+
+      const wishes = [
+        'May tomorrow be a little kinder to you.',
+        'May you find happiness in the smallest things.',
+        'May the future hold more good surprises than worries',
+        'May the things you have worked so hard for, bloom beautifully.',
+        'May life keep surprising you with little reasons to smile.'
+      ];
+
+      let index = 0;
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        w = innerWidth;
+        h = innerHeight;
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        stars = Array.from(
+          { length: Math.floor(w * h / 11000) },
+          () => ({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            r: Math.random() * 1.4 + 0.25,
+            a: Math.random() * 0.6 + 0.15,
+            phase: Math.random() * 7
+          })
+        );
+
+        petals = Array.from({ length: 10 }, () => newPetal(true));
+      }
+
+      function newPetal(initial = false) {
+        return {
+          x: Math.random() * w,
+          y: initial ? Math.random() * h : h + 20,
+          size: Math.random() * 5 + 2,
+          speed: Math.random() * 0.35 + 0.12,
+          sway: Math.random() * 1.1 + 0.3,
+          phase: Math.random() * 7,
+          rot: Math.random() * 6.28,
+          spin: (Math.random() - 0.5) * 0.018,
+          alpha: Math.random() * 0.35 + 0.12
+        };
+      }
+
+      function background(t) {
+        ctx.clearRect(0, 0, w, h);
+
+        for (const star of stars) {
+          const alpha = star.a * (0.68 + 0.32 * Math.sin(t * 0.001 + star.phase));
+          ctx.fillStyle = `rgba(218, 232, 255, ${alpha})`;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        for (const petal of petals) {
+          petal.y -= petal.speed;
+          petal.x += Math.sin(t * 0.0007 + petal.phase) * petal.sway;
+          petal.rot += petal.spin;
+
+          if (petal.y < -20) {
+            Object.assign(petal, newPetal());
+          }
+
+          ctx.save();
+          ctx.translate(petal.x, petal.y);
+          ctx.rotate(petal.rot);
+          ctx.fillStyle = `rgba(142, 183, 242, ${petal.alpha})`;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, petal.size * 0.58, petal.size * 1.5, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      function launch(x, y, big = false) {
+        const startX = x ?? w * (0.18 + Math.random() * 0.64);
+        const startY = h + 8;
+        const targetX = startX + (Math.random() - 0.5) * w * 0.16;
+        const targetY = y ?? h * (0.16 + Math.random() * 0.43);
+
+        rockets.push({
+          x: startX,
+          y: startY,
+          tx: targetX,
+          ty: targetY,
+          duration: 1500 + Math.random() * 650,
+          age: 0,
+          big,
+          color: Math.random() < 0.65 ? 'blue' : 'silver'
+        });
+      }
+
+      function burst(x, y, big = false, color = 'blue') {
+        const count = big ? 95 : Math.floor(30 + Math.random() * 18);
+
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = (big ? 0.75 : 0.65) + Math.random() * (big ? 2.7 : 2.1);
+          const hue = color === 'silver'
+            ? (Math.random() < 0.5 ? 'white' : 'blue')
+            : (Math.random() < 0.72 ? 'blue' : 'white');
+
+          sparks.push({
+            x,
+            y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 0,
+            max: Math.random() * (big ? 100 : 75) + (big ? 65 : 45),
+            size: Math.random() * (big ? 2.5 : 2) + 0.7,
+            hue,
+            glow: big
+          });
+        }
+
+        if (big) {
+          for (let i = 0; i < 20; i++) {
+            sparks.push({
+              x,
+              y,
+              vx: (Math.random() - 0.5) * 1.1,
+              vy: (Math.random() - 0.5) * 1.1,
+              life: 0,
+              max: Math.random() * 110 + 60,
+              size: Math.random() * 2 + 1,
+              hue: 'gold',
+              glow: true
+            });
+          }
+        }
+      }
+
+      function drawSparks() {
+        for (let i = sparks.length - 1; i >= 0; i--) {
+          const spark = sparks[i];
+          spark.life++;
+          spark.x += spark.vx;
+          spark.y += spark.vy;
+          spark.vx *= 0.991;
+          spark.vy = spark.vy * 0.991 + 0.009;
+
+          const fade = Math.max(0, 1 - spark.life / spark.max);
+          let color;
+
+          if (spark.hue === 'gold') {
+            color = `rgba(255, 220, 160, ${fade})`;
+          } else if (spark.hue === 'white') {
+            color = `rgba(235, 244, 255, ${fade})`;
+          } else {
+            color = `rgba(117, 174, 255, ${fade})`;
+          }
+
+          ctx.save();
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.fillStyle = color;
+          ctx.shadowBlur = 0;
+          ctx.beginPath();
+          ctx.arc(spark.x, spark.y, spark.size * fade, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+
+          if (spark.life >= spark.max) {
+            sparks.splice(i, 1);
+          }
+        }
+      }
+
+      function frame(timestamp) {
+        const deltaTime = Math.min(34, timestamp - last || 16);
+        last = timestamp;
+
+        background(timestamp);
+
+        for (let i = rockets.length - 1; i >= 0; i--) {
+          const rocket = rockets[i];
+          rocket.age += deltaTime;
+
+          const rawProgress = Math.min(1, rocket.age / rocket.duration);
+          const progress = 1 - Math.pow(1 - rawProgress, 1.45);
+          const x = rocket.x + (rocket.tx - rocket.x) * progress;
+          const y = rocket.y + (rocket.ty - rocket.y) * progress;
+
+          ctx.fillStyle = '#e3eeff';
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = '#83b8ff';
+          ctx.beginPath();
+          ctx.arc(x, y, 2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          for (let j = 0; j < 1; j++) {
+            sparks.push({
+              x: x + (Math.random() - 0.5) * 3,
+              y: y + Math.random() * 5,
+              vx: (Math.random() - 0.5) * 0.8,
+              vy: Math.random() * 1.1,
+              life: 0,
+              max: 18,
+              size: Math.random() * 1.5 + 0.5,
+              hue: 'white'
+            });
+          }
+
+          if (progress >= 1) {
+            burst(rocket.tx, rocket.ty, rocket.big, rocket.color);
+            rockets.splice(i, 1);
+          }
+        }
+
+        drawSparks();
+        rafId = requestAnimationFrame(frame);
+      }
+
+      function showWish() {
+        if (index >= wishes.length) return;
+
+        const wishElement = document.getElementById('wish');
+        const wishButton = document.getElementById('wishBtn');
+        const currentWish = wishes[index];
+
+        // Prevent rapid clicks from skipping the wish's fade-in animation.
+        wishButton.disabled = true;
+        wishButton.style.opacity = '0.65';
+        wishElement.classList.remove('show');
+
+        // Let the previous wish fade away before the next one gently appears.
+        setTimeout(() => {
+          wishElement.textContent = currentWish;
+          wishElement.classList.add('show');
+        }, 300);
+
+        document.getElementById('counter').textContent =
+          `WISH ${String(index + 1).padStart(2, '0')} OF ${wishes.length}`;
+
+        launch(
+          w * (0.18 + Math.random() * 0.64),
+          h * (0.18 + Math.random() * 0.38),
+          false
+        );
+
+        index++;
+
+        if (index === wishes.length) {
+          wishButton.textContent = 'One last wish ✦';
+          document.getElementById('hint').textContent = 'For all the tomorrows ahead';
+        } else {
+          wishButton.textContent = 'Make another wish ✦';
+        }
+
+        // Keep the fifth wish on screen long enough to be seen before the ending.
+        setTimeout(() => {
+          wishButton.disabled = false;
+          wishButton.style.opacity = '';
+        }, 1650);
+      }
+
+      function finish() {
+        if (endingStarted) return;
+        endingStarted = true;
+
+        document.getElementById('main').classList.add('hidden');
+        launch(w * 0.5, h * 0.36, true);
+
+        setTimeout(() => {
+          launch(w * 0.36, h * 0.3, true);
+          launch(w * 0.65, h * 0.28, true);
+        }, 850);
+
+        setTimeout(() => {
+          document.getElementById('ending').classList.add('visible');
+        }, 1750);
+      }
+
+      document.getElementById('wishBtn').addEventListener('click', () => {
+        if (index < wishes.length) {
+          showWish();
+        } else {
+          finish();
+        }
+      });
+
+      document.getElementById('againBtn').addEventListener('click', () => {
+        index = 0;
+        endingStarted = false;
+        rockets = [];
+        sparks = [];
+
+        document.getElementById('wish').textContent = '';
+        document.getElementById('wish').classList.remove('show');
+        document.getElementById('counter').textContent = '';
+        document.getElementById('wishBtn').textContent = 'Make a wish ✦';
+        document.getElementById('hint').textContent = 'One little wish at a time';
+        document.getElementById('main').classList.remove('hidden');
+        document.getElementById('ending').classList.remove('visible');
+
+        launch(w * 0.5, h * 0.35, false);
+      });
+
+      window.addEventListener('resize', resize);
+      resize();
+      launch(w * 0.25, h * 0.36, false);
+      setTimeout(() => launch(w * 0.72, h * 0.31, false), 1200);
+      rafId = requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>

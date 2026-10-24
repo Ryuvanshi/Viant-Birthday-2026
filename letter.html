@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Letter For You 💌</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:center;
+    background:radial-gradient(circle at top,#f3e4c6,#d6b98c);
+    overflow-x:hidden;
+    overflow-y:auto;
+    padding:40px 0;
+    position:relative;
+}
+/* Floating dust particles */
+.dust{
+    position:fixed;
+    width:4px;height:4px;
+    background:rgba(255,255,255,.4);
+    border-radius:50%;
+    animation:float 12s linear infinite;
+    pointer-events:none;
+}
+@keyframes float{
+    from{transform:translateY(110vh);opacity:0;}
+    20%{opacity:1;}
+    to{transform:translateY(-10vh);opacity:0;}
+}
+/* ENVELOPE */
+.envelope-wrapper{
+    position:fixed;
+    top:50%;
+    left:50%;
+    z-index:20;
+    cursor:pointer;
+    transform:translate(-50%,-50%);
+    animation:floatEnvelope 3s ease-in-out infinite;
+    transition:opacity 1s;
+}
+@keyframes floatEnvelope{
+    0%,100%{transform:translate(-50%,-50%);}
+    50%{transform:translate(-50%,calc(-50% - 10px));}
+}
+.envelope{position:relative;width:320px;height:220px;}
+.front{
+    position:absolute;width:100%;height:100%;
+    background:#e0c39b;border-radius:8px;overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+.flap{
+    position:absolute;top:0;left:0;width:100%;height:100%;
+    background:#d4b183;
+    clip-path:polygon(0 0,50% 55%,100% 0);
+    transform-origin:top;transition:1s ease;z-index:5;
+}
+.heart-seal{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:70px;height:70px;border-radius:50%;
+    background:radial-gradient(circle at top left,#ff7a7a,#a11f1f);
+    display:flex;justify-content:center;align-items:center;
+    color:white;font-size:28px;z-index:10;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);transition:.5s;
+}
+.open .flap{transform:rotateX(180deg);}
+.open .heart-seal{opacity:0;transform:translate(-50%,-50%) scale(.5);}
+/* LETTER */
+.letter{
+    width:800px;max-width:92%;
+    background:linear-gradient(rgba(255,255,255,.15),rgba(255,255,255,.05)),#f5e7c9;
+    padding:60px;border-radius:6px;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+    color:#4d3927;position:relative;
+    opacity:0;transform:translateY(100px) scale(.8) rotate(-4deg);
+    pointer-events:none;
+    height:auto;
+    max-height:none;
+    overflow:visible;
+    margin:40px auto;
+}
+.letter::before{
+    content:"";position:absolute;inset:12px;
+    border:1px solid rgba(0,0,0,.08);pointer-events:none;
+}
+.date,.greeting,.content,.signature,.page-turn{
+    opacity:0;animation:fadeIn 1s ease forwards;animation-delay:1.2s;
+}
+@keyframes fadeIn{to{opacity:1;}}
+.date{
+    text-align:right;margin-bottom:30px;
+    font-family:'Cormorant Garamond',serif;font-size:22px;
+}
+.greeting{
+    font-family:'Dancing Script',cursive;font-size:46px;margin-bottom:25px;
+}
+.content{
+    font-family:'Cormorant Garamond',serif;
+    font-size:26px;line-height:1.9;white-space:pre-line;
+}
+.signature{
+    margin-top:40px;text-align:right;
+    font-family:'Dancing Script',cursive;font-size:42px;
+}
+/* BUTTON */
+.page-turn{margin-top:40px;text-align:center;}
+.page-turn button{
+    background:rgba(139,90,60,.15);border:1px solid rgba(139,90,60,.4);
+    color:#5b4331;padding:12px 28px;border-radius:999px;
+    font-family:'Cormorant Garamond',serif;font-size:22px;
+    cursor:pointer;transition:.3s;
+}
+.page-turn button:hover{background:rgba(139,90,60,.25);transform:translateY(-2px);}
+/* WAX SEAL */
+.seal{
+    position:relative;margin:38px auto -20px;left:auto;bottom:auto;
+    width:80px;height:80px;border-radius:50%;
+    background:radial-gradient(circle at top left,#ff7a7a,#a11f1f);
+    display:flex;justify-content:center;align-items:center;
+    color:white;font-size:30px;box-shadow:0 8px 20px rgba(0,0,0,.3);
+}
+@media(max-width:600px){
+    body{padding:24px 0;}
+    .letter{width:92%;max-width:92%;padding:35px 24px;margin:24px auto;}
+    .greeting{font-size:36px;}
+    .content{font-size:20px;line-height:1.8;}
+    .date{font-size:18px;}
+    .signature{font-size:34px;}
+    .page-turn button{font-size:20px;padding:10px 22px;}
+}
+</style>
+</head>
+<body>
+<!-- ENVELOPE -->
+<div class="envelope-wrapper" onclick="openEnvelope()" aria-label="Open the letter" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openEnvelope();}">
+    <div class="envelope">
+        <div class="flap"></div>
+        <div class="front"></div>
+        <div class="heart-seal">❤</div>
+    </div>
+</div>
+
+<!-- LETTER -->
+<div class="letter">
+    <div class="date">October 31</div>
+    <div class="greeting">To My Favorite Person,</div>
+    <div class="content">Happy birthday, Viant! ♡
+
+I hope today gives you plenty of reasons to smile, something delicious to eat, and a few moments where you can simply sit back, relax, and enjoy your special day. No deadlines, no worries about what comes next, just a little time for yourself.
+
+Birthdays can be a nice little reminder to pause and appreciate the things that sometimes get lost in the busyness of life. It's easy to get caught up in deadlines, responsibilities, and all the plans you make for the future. But there's more to life than the things you need to accomplish. There's also the little things: a song you can't stop listening to, a conversation that makes you laugh, a beautiful sky on your way home, or a quiet afternoon when everything feels just right.
+
+I hope there are plenty of moments like those waiting for you. The kind that don't need to be extraordinary to become something worth remembering and I hope you can look back on everything you've accomplished and feel proud of how far you've come. Graduation marks the end of one chapter, but it also opens the door to so many new possibilities. There may be unfamiliar paths ahead, unexpected turns, and moments when you're unsure of what comes next, but I hope you meet them with courage.
+
+You don't need to have your entire future figured out right away. Take your time discovering what you want, what makes you happy, and what kind of life you want to build. I hope you encounter opportunities that excite you, people who encourage you, and experiences that help you discover even more about yourself.
+
+But beyond all the things you hope to achieve, I hope you always leave a little room to simply be yourself. You don't have to have everything figured out. You don't have to move at the same pace as everyone else. Some things take time, and some days will be slower than others. That's okay, too. There's no single way to live a life, just as there's no single way for a flower to bloom.
+
+So, keep discovering things that make you happy. Find new things to be curious about, new places to explore, new songs to love, and new memories that will make you smile when you look back on them someday.
+
+And whenever life feels a little too heavy, I hope you find people and places where you can rest without having to pretend that everything is fine. You deserve kindness on the difficult days just as much as you deserve happiness on the good ones.
+
+For your birthday, I wish you peaceful mornings, beautiful surprises, good health, fulfilling days, and countless little reasons to smile. I hope the days ahead bring you closer to the things that matter to you, while leaving you enough time to enjoy the little things along the way.
+
+Happy birthday, Viant.
+
+May you grow at your own pace, find happiness in your own way, and discover more moments that make life feel a little more beautiful.
+
+Enjoy your day. You deserve it. ♡</div>
+    <div class="signature">— Ryu</div>
+    <div class="page-turn">
+        <button onclick="nextPage()">Turn the Page →</button>
+    </div>
+    <div class="seal">❤</div>
+</div>
+<script>
+function openEnvelope(){
+    const wrapper=document.querySelector('.envelope-wrapper');
+    const letter=document.querySelector('.letter');
+    if(wrapper.dataset.opened==='true') return;
+    wrapper.dataset.opened='true';
+    wrapper.classList.add('open');
+    setTimeout(()=>{
+        wrapper.style.opacity='0';
+        wrapper.style.pointerEvents='none';
+        letter.style.transition='all 1.2s ease';
+        letter.style.opacity='1';
+        letter.style.transform='translateY(0) scale(1) rotate(-1deg)';
+        letter.style.pointerEvents='auto';
+    },900);
+}
+function nextPage(){
+    const letter=document.querySelector('.letter');
+    letter.style.transition='all 0.8s ease';
+    letter.style.opacity='0';
+    letter.style.transform='translateY(-20px) rotate(-1deg)';
+    setTimeout(()=>{window.location.href='commis.html';},800);
+}
+for(let i=0;i<40;i++){
+    const dust=document.createElement('div');
+    dust.classList.add('dust');
+    dust.style.left=Math.random()*100+'vw';
+    dust.style.animationDuration=(8+Math.random()*8)+'s';
+    dust.style.animationDelay=Math.random()*8+'s';
+    document.body.appendChild(dust);
+}
+</script>
+</body>
+</html>

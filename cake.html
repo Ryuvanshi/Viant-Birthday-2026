@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Cake 🎂</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Quicksand',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    background: linear-gradient(135deg, #ff9eb5, #c8a2ff);
+    color:white;
+    overflow:hidden;
+    opacity:0;
+    transition: opacity 1s ease;
+}
+
+body.loaded{
+    opacity:1;
+}
+
+.container{
+    text-align:center;
+}
+
+h1{
+    font-size:2.5rem;
+    margin-bottom:10px;
+}
+
+p{
+    opacity:0.9;
+    margin-bottom:25px;
+}
+
+.cake{
+    font-size:100px;
+    animation: float 2.5s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-15px); }
+}
+
+button{
+    margin-top:25px;
+    padding:12px 25px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+    background:rgba(255,255,255,0.2);
+    color:white;
+    transition:0.3s;
+}
+
+button:hover{
+    background:rgba(255,255,255,0.35);
+    transform:scale(1.05);
+}
+
+.heart{
+    position:absolute;
+    color:white;
+    opacity:0.25;
+    animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp{
+    from{ transform:translateY(100vh); }
+    to{ transform:translateY(-10vh); }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgm" src="music.mp3" loop></audio>
+
+<div class="container">
+    <h1>🎉 You made it 🎉</h1>
+    <p>Before you open the gift, let's make wishes</p>
+
+    <div class="cake">🎂</div>
+
+    <button onclick="nextPage()">Open surprise</button>
+</div>
+
+<script>
+
+// fade in
+window.addEventListener("load", () => {
+    document.body.classList.add("loaded");
+
+    // start music after load (browser allows this)
+    const music = document.getElementById("bgm");
+    music.volume = 0.5;
+    music.play();
+});
+
+// go to next page
+function nextPage(){
+    document.body.style.opacity = "0";
+
+    setTimeout(() => {
+        window.location.href = "letter.html";
+    }, 1000);
+}
+
+// floating hearts
+for(let i=0;i<20;i++){
+    const h = document.createElement("div");
+    h.classList.add("heart");
+    h.innerHTML = "❤";
+
+    h.style.left = Math.random()*100 + "vw";
+    h.style.animationDuration = (4 + Math.random()*4) + "s";
+    h.style.fontSize = (12 + Math.random()*20) + "px";
+
+    document.body.appendChild(h);
+}
+
+</script>
+
+</body>
+</html>

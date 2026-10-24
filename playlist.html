@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>A Little Mixtape for You ♡</title>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --paper:#f4e8d0;
+    --paper-light:#fbf4e7;
+    --ink:#59432f;
+    --muted:#8c7358;
+    --line:#d8c4a2;
+    --accent:#8b6b4a;
+    --blue:#8da8bb
+}
+
+* {
+    box-sizing:border-box
+}
+
+html {
+    scroll-behavior:smooth
+}
+
+body {
+    margin:0;
+    min-height:100vh;
+    padding:36px 16px 56px;
+    color:var(--ink);
+    font-family:'Cormorant Garamond',
+    serif;
+    background:radial-gradient(circle at 12% 8%,
+    rgba(255,255,255,
+    .65),
+    transparent 28%),
+    radial-gradient(circle at 88% 22%,
+    rgba(141,168,187,
+    .16),
+    transparent 26%),
+    linear-gradient(135deg,
+    #e7d4b4,
+    #f4e8d0 48%,
+    #dfc8a4)
+}
+
+.page {
+    width:min(900px,100%);
+    margin:0 auto
+}
+
+.top-note {
+    text-align:center;
+    color:var(--muted);
+    font-size:15px;
+    letter-spacing:.18em;
+    text-transform:uppercase
+}
+
+h1 {
+    margin:8px 0 4px;
+    text-align:center;
+    font-family:'Dancing Script',
+    cursive;
+    font-size:clamp(42px,8vw,68px);
+    font-weight:600
+}
+
+.subtitle {
+    margin:0 auto 28px;
+    text-align:center;
+    font-size:21px;
+    font-style:italic;
+    color:var(--muted)
+}
+
+.paper-card {
+    position:relative;
+    padding:clamp(20px,5vw,42px);
+    background:rgba(251,244,231,
+    .88);
+    border:1px solid rgba(139,107,74,
+    .28);
+    border-radius:5px;
+    box-shadow:0 18px 45px rgba(75,53,31,
+    .16)
+}
+
+.paper-card::before {
+    content:"";
+    position:absolute;
+    inset:10px;
+    border:1px solid rgba(139,107,74,
+    .14);
+    pointer-events:none
+}
+
+.intro {
+    position:relative;
+    text-align:center;
+    max-width:650px;
+    margin:0 auto 28px;
+    font-size:21px;
+    line-height:1.65
+}
+
+.tape-label {
+    position:relative;
+    width:min(420px,100%);
+    margin:0 auto 32px;
+    padding:18px 16px 16px;
+    background:#e4d1ae;
+    border:1px solid #c9b18a;
+    border-radius:7px;
+    box-shadow:0 8px 18px rgba(75,53,31,
+    .12);
+    text-align:center;
+    transform:rotate(-1deg)
+}
+
+.tape-label::before,
+.tape-label::after {
+    content:"";
+    position:absolute;
+    top:50%;
+    width:18px;
+    height:18px;
+    margin-top:-9px;
+    border-radius:50%;
+    background:var(--paper-light);
+    border:1px solid #c9b18a
+}
+
+.tape-label::before {
+    left:14px
+}
+
+.tape-label::after {
+    right:14px
+}
+
+.tape-title {
+    font-family:'Dancing Script',
+    cursive;
+    font-size:30px
+}
+
+.tape-subtitle {
+    font-size:16px;
+    color:var(--muted)
+}
+
+.song-list {
+    position:relative;
+    display:grid;
+    gap:18px
+}
+
+.song {
+    display:grid;
+    grid-template-columns:54px minmax(0,1fr);
+    gap:16px;
+    padding:18px;
+    border:1px solid rgba(139,107,74,
+    .22);
+    border-radius:6px;
+    background:rgba(255,255,255,
+    .36)
+}
+
+.track-number {
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:#e6d6ba;
+    color:#765b3e;
+    font-size:19px
+}
+
+.song h2 {
+    margin:0 0 2px;
+    font-size:25px;
+    font-weight:600
+}
+
+.artist {
+    margin:0 0 9px;
+    color:var(--muted);
+    font-size:18px
+}
+
+.note {
+    margin:0 0 14px;
+    font-size:19px;
+    line-height:1.45;
+    font-style:italic
+}
+
+.player-row {
+    display:grid;
+    grid-template-columns:44px minmax(0,1fr);
+    gap:12px;
+    align-items:center
+}
+
+.play-button {
+    width:42px;
+    height:42px;
+    border:1px solid rgba(139,107,74,
+    .45);
+    border-radius:50%;
+    background:#e9d8b9;
+    color:#59432f;
+    display:grid;
+    place-items:center;
+    font-size:17px;
+    cursor:pointer;
+    transition:transform .2s,
+    background .2s
+}
+
+.play-button:hover {
+    transform:scale(1.05);
+    background:#dfc7a0
+}
+
+.play-button:focus-visible,
+.progress:focus-visible {
+    outline:2px solid #8b6b4a;
+    outline-offset:3px
+}
+
+.audio-meta {
+    min-width:0
+}
+
+.progress {
+    width:100%;
+    height:7px;
+    display:block;
+    appearance:none;
+    border:0;
+    border-radius:99px;
+    background:#dfceb0;
+    cursor:pointer;
+    overflow:hidden
+}
+
+.progress::-webkit-progress-bar {
+    background:#dfceb0;
+    border-radius:99px
+}
+
+.progress::-webkit-progress-value {
+    background:#8b6b4a;
+    border-radius:99px
+}
+
+.progress::-moz-progress-bar {
+    background:#8b6b4a;
+    border-radius:99px
+}
+
+.time-row {
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    margin-top:5px;
+    color:#8c7358;
+    font-size:14px
+}
+
+.footer-note {
+    margin:28px auto 0;
+    max-width:650px;
+    text-align:center;
+    font-size:22px;
+    line-height:1.6
+}
+
+.footer-note .handwritten {
+    font-family:'Dancing Script',
+    cursive;
+    font-size:31px
+}
+
+.back-link {
+    display:block;
+    width:fit-content;
+    margin:28px auto 0;
+    padding:10px 22px;
+    border:1px solid rgba(139,107,74,
+    .4);
+    border-radius:999px;
+    color:var(--ink);
+    text-decoration:none;
+    background:rgba(255,255,255,
+    .32);
+    font-size:20px;
+    transition:.25s ease
+}
+
+.back-link:hover {
+    background:rgba(139,107,74,
+    .14);
+    transform:translateY(-2px)
+}
+
+@media(max-width:560px) {
+    body {
+        padding:22px 12px 40px
+    }
+
+    .song {
+        grid-template-columns:40px minmax(0,1fr);
+        gap:10px;
+        padding:12px
+    }
+
+    .track-number {
+        width:38px;
+        height:38px;
+        font-size:16px
+    }
+
+    .song h2 {
+        font-size:22px
+    }
+
+    .note {
+        font-size:18px
+    }
+
+}
+</style>
+
+</head>
+<body>
+<main class="page">
+<p class="top-note">a little collection, just for you</p>
+<h1>Songs for Your Little World ♡</h1>
+<p class="subtitle">A few songs to keep you company along the way.</p>
+<section class="paper-card">
+<p class="intro">For quiet mornings, slower afternoons, and the little moments that make a day feel softer. I hope these songs bring you a little comfort whenever you need it.</p>
+<div class="tape-label" aria-label="Mixtape cover">
+<div class="tape-title">A Mixtape for Viant</div>
+</div>
+<div class="song-list">
+<article class="song" data-src="Assets/Audio/LuckyBonBon.mp3">
+<div class="track-number">01</div>
+<div>
+<h2>ラッキーボンボン (Lucky Bon Bon)</h2>
+<p class="artist">Chopil ft. Hatsune Miku</p>
+<p class="note">"For a little more sweetness, a little less worrying, and more reasons to smile even on the difficult days. Bon Bon!"</p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Lucky Bon Bon" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Lucky Bon Bon playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Sloth.mp3">
+<div class="track-number">02</div>
+<div>
+<h2>Sloth</h2>
+<p class="artist">Mili</p>
+<p class="note">"It's better to not care about what others think about you. At the end of the day, it's always more comfortable to be yourself and be who you want to be, rather than fitting into how other people want you to be."</p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Sloth" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Sloth playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Flowerworks.mp3">
+<div class="track-number">03</div>
+<div>
+<h2>Flowerworks</h2>
+<p class="artist">Mili</p>
+<p class="note">"I hope that, sometimes, you can look back and see how far you've come, even when the road hasn't been easy. You don't have to be perfect, and you don't have to have everything figured out. I hope you find people who make the journey a little gentler, who accept you as you are, and with whom you can keep walking toward the things you dream of"</p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Flowerworks" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Flowerworks playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Kanadetomosusora.mp3">
+<div class="track-number">04</div>
+<div>
+<h2>カナデトモスソラ (Kanadetomosusora)</h2>
+<p class="artist">Nightcord at 25 x Megurine Luka</p>
+<p class="note">"If you ever feel lost, please remember that you're not alone."</p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Kanadetomosusora" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Kanadetomosusora playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Fly Away.mp3">
+<div class="track-number">05</div>
+<div>
+<h2>Fly Away</h2>
+<p class="artist">Rei (TUYU)</p>
+<p class="note">"May you always find the courage to take that next little step, even when the future feels uncertain. You don't have to rush or have everything figured out. Keep dreaming, keep discovering, and remember that there's still a whole world waiting for you beyond the horizon."</p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Fly Away" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Fly Away playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Hug You.mp3">
+<div class="track-number">06</div>
+<div>
+<h2>Hug You (Radio edit)</h2>
+<p class="artist">Teno Kayamoto</p>
+<p class="note">"I might not be able to fix everything that's hurting you, but I want to ease your sadness. Just like the lyrics, I'll hug you to wash your pain away, to brighten your day. I'll take all your tears and sorrows, and hold them tight."</p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Hug You" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Hug You playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Étoile.mp3">
+<div class="track-number">07</div>
+<div>
+<h2>Étoile</h2>
+<p class="artist">Haruka Shimotsuki</p>
+<p class="note"></p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Étoile" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Étoile playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Twilight.mp3">
+<div class="track-number">08</div>
+<div>
+<h2>Twilight</h2>
+<p class="artist">Hakubi</p>
+<p class="note"></p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Twilight" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Twilight playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Outcry.mp3">
+<div class="track-number">09</div>
+<div>
+<h2>Outcry</h2>
+<p class="artist">Atarayo</p>
+<p class="note"></p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Outcry" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Outcry playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/The Everlasting Guilty Crown.mp3">
+<div class="track-number">10</div>
+<div>
+<h2>The Everlasting Guilty Crown</h2>
+<p class="artist">supercell</p>
+<p class="note"></p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play The Everlasting Guilty Crown" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="The Everlasting Guilty Crown playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/The Story You Don't Know.mp3">
+<div class="track-number">11</div>
+<div>
+<h2>The Story You Don't Know</h2>
+<p class="artist">supercell</p>
+<p class="note"></p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play The Story You Don't Know" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="The Story You Don't Know playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Tsuki to Hanataba.mp3">
+<div class="track-number">12</div>
+<div>
+<h2>Moon & Bouquet</h2>
+<p class="artist">Sayuri</p>
+<p class="note"></p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Tsuki to Hanataba" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Tsuki to Hanataba playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Ga1ahad and Scientific Witchery.mp3">
+<div class="track-number">13</div>
+<div>
+<h2>Ga1ahad and Scientific Witchery</h2>
+<p class="artist">Mili</p>
+<p class="note"></p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Ga1ahad and Scientific Witchery" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Ga1ahad and Scientific Witchery playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Hero.mp3">
+<div class="track-number">14</div>
+<div>
+<h2>Hero</h2>
+<p class="artist">Mili</p>
+<p class="note">"My 3rd favorite Limbus Company song, accept your past and make your own stories. You shall gallop ever-onward, unbroken, unrelenting to the end!!" </p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Hero" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Hero playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Through Patches of Violet.mp3">
+<div class="track-number">15</div>
+<div>
+<h2>Through Patches of Violet</h2>
+<p class="artist">Mili</p>
+<p class="note">"My 2nd favorite Limbus Company song, I love how it captures that feeling of blaming yourself, drowning in regret, and struggling to come to terms with what happened. The emotions in this song hit so hard."</p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Through Patches of Violet" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Through Patches of Violet playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Saikai.mp3">
+<div class="track-number">16</div>
+<div>
+<h2>Saikai</h2>
+<p class="artist">Mili</p>
+<p class="note">"My all-time favorite, it really hit my soft spot. A mother that never feel loved willing to give every ounce of love to her daughter to give her a normal childhood."</p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Saikai" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Saikai playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Iron Lotus.mp3">
+<div class="track-number">17</div>
+<div>
+<h2>Iron Lotus</h2>
+<p class="artist">Mili</p>
+<p class="note"></p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Iron Lotus" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Iron Lotus playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+<article class="song" data-src="Assets/Audio/Hikari.mp3">
+<div class="track-number">18</div>
+<div>
+<h2>Hikari</h2>
+<p class="artist">Yui Sakurai</p>
+<p class="note">" 君のこと知れば知るほど 大切がふえてゆくよ"</p>
+<div class="player-row">
+<button class="play-button" type="button" aria-label="Play Hikari" aria-pressed="false">▶</button>
+<div class="audio-meta">
+<progress class="progress" value="0" max="100" aria-label="Hikari playback progress" tabindex="0">
+</progress>
+<div class="time-row">
+<span class="current-time">0:00</span>
+<span class="duration">--:--</span>
+</div>
+</div>
+</div>
+</div>
+<audio preload="metadata">
+</audio>
+</article>
+</div>
+<p class="footer-note">I hope you find a song here that makes your day feel a little lighter.<br>
+<span class="handwritten">Take your time, and enjoy the music. ♡</span>
+</p>
+</section>
+<a class="back-link" href="poem.html">Continue to the poem →</a>
+</main>
+
+<script>
+const tracks = [...document.querySelectorAll(".song")];
+
+function formatTime(seconds) {
+    if (!Number.isFinite(seconds) || seconds < 0) return "--:--";
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
+    return `${mins}:${secs}`;
+}
+
+function updateTrack(track) {
+    const audio = track.querySelector("audio");
+    const progress = track.querySelector(".progress");
+    const current = track.querySelector(".current-time");
+    const duration = track.querySelector(".duration");
+    const button = track.querySelector(".play-button");
+
+    current.textContent = formatTime(audio.currentTime);
+    duration.textContent = formatTime(audio.duration);
+    progress.value = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+    button.textContent = audio.paused ? "▶" : "Ⅱ";
+    button.setAttribute("aria-pressed", String(!audio.paused));
+    button.setAttribute("aria-label", `${audio.paused ? "Play" : "Pause"} ${track.querySelector("h2").textContent}`);
+}
+
+function stopOtherTracks(activeTrack) {
+    tracks.forEach(track => {
+        if (track === activeTrack) return;
+        const audio = track.querySelector("audio");
+        audio.pause();
+        updateTrack(track);
+    });
+}
+
+tracks.forEach(track => {
+    const audio = track.querySelector("audio");
+    const button = track.querySelector(".play-button");
+    const progress = track.querySelector(".progress");
+    audio.src = track.dataset.src;
+    audio.volume = 0.30;
+
+    button.addEventListener("click", async () => {
+        if (audio.paused) {
+            stopOtherTracks(track);
+            try {
+                await audio.play();
+            } catch (error) {
+                alert("This track could not be played yet. Please check that the MP3 file is in Assets/Audio and the filename matches the page.");
+            }
+        } else {
+            audio.pause();
+        }
+        updateTrack(track);
+    });
+
+    audio.addEventListener("timeupdate", () => updateTrack(track));
+    audio.addEventListener("loadedmetadata", () => updateTrack(track));
+    audio.addEventListener("play", () => updateTrack(track));
+    audio.addEventListener("pause", () => updateTrack(track));
+    audio.addEventListener("ended", () => {
+        updateTrack(track);
+        const next = tracks[tracks.indexOf(track) + 1];
+        if (next) {
+            const nextAudio = next.querySelector("audio");
+            stopOtherTracks(next);
+            nextAudio.play().catch(() => {});
+        }
+    });
+
+    progress.addEventListener("click", event => {
+        if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+        const rect = progress.getBoundingClientRect();
+        const ratio = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+        audio.currentTime = ratio * audio.duration;
+    });
+
+    progress.addEventListener("keydown", event => {
+        if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+        if (event.key === "ArrowRight") { audio.currentTime = Math.min(audio.duration, audio.currentTime + 5); event.preventDefault(); }
+        if (event.key === "ArrowLeft") { audio.currentTime = Math.max(0, audio.currentTime - 5); event.preventDefault(); }
+    });
+});
+</script>
+
+</body>
+</html>
